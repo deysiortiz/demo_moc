@@ -56,7 +56,31 @@
     <artifactId>rxjava</artifactId>
     <version>2.2.19</version>
     
+		</dependency>
+<!-- BASE DE DATOS ORACLE 
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ojdbc8</artifactId>
+    <version>21.0.0.0.0</version> 
+</dependency>-->
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
 </dependency>
+
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ojdbc8</artifactId> <!-- Dependiendo de tu versión de Oracle, puedes necesitar una versión diferente -->
+    <version>19.3.0.0</version> <!-- Versión específica de Oracle JDBC -->
+</dependency>
+
+<dependency>
+    <groupId>org.jboss.logging</groupId>
+    <artifactId>jboss-logging</artifactId>
+    <version>3.4.2.Final</version> <!-- Utiliza la versión más reciente -->
+</dependency>
+
 	</dependencies>
 
 	<build>

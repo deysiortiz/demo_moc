@@ -1,14 +1,19 @@
 package com.commerce.demo.Bean;
 
+import java.sql.SQLException;
+
 public class Cliente {
-	public String nombre;
+	public String nombres;
 	public String apellidos;
 	public String tipDocumento;
 	public String nroDocumento;
+	public String fecNacimiento;
 	public String dirParticular;
 	public String ciudadParticular;
+	public String obsDirParticular;
 	public String dirLaboral;
 	public String ciudadLaboral;
+	public String obsDirLaboral;
 	public String nomEmpresa;
 	public String fecIngEmpresa;
 	public String tipIngreso;
@@ -22,19 +27,22 @@ public class Cliente {
 	}
 
 
-
-	public Cliente(String nombre, String apellidos, String tipDocumento, String nroDocumento, String dirParticular,
-			String ciudadParticular, String dirLaboral, String ciudadLaboral, String nomEmpresa, String fecIngEmpresa,
-			String tipIngreso, String mtoIngreso, String datAdicional) {
+	public Cliente(String nombres, String apellidos, String tipDocumento, String nroDocumento, String fecNacimiento, String dirParticular,
+			String ciudadParticular, String obsDirParticular, String dirLaboral, String ciudadLaboral,
+			String obsDirLaboral, String nomEmpresa, String fecIngEmpresa, String tipIngreso, String mtoIngreso,
+			String datAdicional) {
 		super();
-		this.nombre = nombre;
+		this.nombres = nombres;
 		this.apellidos = apellidos;
 		this.tipDocumento = tipDocumento;
 		this.nroDocumento = nroDocumento;
+		this.fecNacimiento = fecNacimiento;
 		this.dirParticular = dirParticular;
 		this.ciudadParticular = ciudadParticular;
+		this.obsDirParticular = obsDirParticular;
 		this.dirLaboral = dirLaboral;
 		this.ciudadLaboral = ciudadLaboral;
+		this.obsDirLaboral = obsDirLaboral;
 		this.nomEmpresa = nomEmpresa;
 		this.fecIngEmpresa = fecIngEmpresa;
 		this.tipIngreso = tipIngreso;
@@ -44,14 +52,14 @@ public class Cliente {
 
 
 
-	public String getNombre() {
-		return nombre;
+	public String getNombres() {
+		return nombres;
 	}
 
 
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
 	}
 
 
@@ -83,6 +91,14 @@ public class Cliente {
 	public String getNroDocumento() {
 		return nroDocumento;
 	}
+	
+	public void setFecNacimiento(String fecNacimiento) {
+		this.fecNacimiento = fecNacimiento;
+	}
+
+	public String getFecNacimiento() {
+		return fecNacimiento;
+	}
 
 
 
@@ -91,17 +107,13 @@ public class Cliente {
 	}
 
 
-
 	public String getDirParticular() {
 		return dirParticular;
 	}
 
-
-
 	public void setDirParticular(String dirParticular) {
 		this.dirParticular = dirParticular;
 	}
-
 
 
 	public String getCiudadParticular() {
@@ -109,11 +121,19 @@ public class Cliente {
 	}
 
 
-
 	public void setCiudadParticular(String ciudadParticular) {
 		this.ciudadParticular = ciudadParticular;
 	}
 
+
+	public String getObsDirParticular() {
+		return obsDirParticular;
+	}
+
+
+	public void setObsDirParticular(String obsDirParticular) {
+		this.obsDirParticular = obsDirParticular;
+	}
 
 
 	public String getDirLaboral() {
@@ -121,11 +141,9 @@ public class Cliente {
 	}
 
 
-
 	public void setDirLaboral(String dirLaboral) {
 		this.dirLaboral = dirLaboral;
 	}
-
 
 
 	public String getCiudadLaboral() {
@@ -133,11 +151,19 @@ public class Cliente {
 	}
 
 
-
 	public void setCiudadLaboral(String ciudadLaboral) {
 		this.ciudadLaboral = ciudadLaboral;
 	}
 
+
+	public String getObsDirLaboral() {
+		return obsDirLaboral;
+	}
+
+
+	public void setObsDirLaboral(String obsDirLaboral) {
+		this.obsDirLaboral = obsDirLaboral;
+	}
 
 
 	public String getNomEmpresa() {
@@ -145,11 +171,9 @@ public class Cliente {
 	}
 
 
-
 	public void setNomEmpresa(String nomEmpresa) {
 		this.nomEmpresa = nomEmpresa;
 	}
-
 
 
 	public String getFecIngEmpresa() {
@@ -157,11 +181,9 @@ public class Cliente {
 	}
 
 
-
 	public void setFecIngEmpresa(String fecIngEmpresa) {
 		this.fecIngEmpresa = fecIngEmpresa;
 	}
-
 
 
 	public String getTipIngreso() {
@@ -169,11 +191,9 @@ public class Cliente {
 	}
 
 
-
 	public void setTipIngreso(String tipIngreso) {
 		this.tipIngreso = tipIngreso;
 	}
-
 
 
 	public String getMtoIngreso() {
@@ -181,11 +201,9 @@ public class Cliente {
 	}
 
 
-
 	public void setMtoIngreso(String mtoIngreso) {
 		this.mtoIngreso = mtoIngreso;
 	}
-
 
 
 	public String getDatAdicional() {
@@ -193,23 +211,22 @@ public class Cliente {
 	}
 
 
-
 	public void setDatAdicional(String datAdicional) {
 		this.datAdicional = datAdicional;
 	}
 
 
-
 	@Override
 	public String toString() {
-		return "Cliente [nombre=" + nombre + ", apellidos=" + apellidos + ", tipDocumento=" + tipDocumento
-				+ ", nroDocumento=" + nroDocumento + ", dirParticular=" + dirParticular + ", ciudadParticular="
-				+ ciudadParticular + ", dirLaboral=" + dirLaboral + ", ciudadLaboral=" + ciudadLaboral + ", nomEmpresa="
-				+ nomEmpresa + ", fecIngEmpresa=" + fecIngEmpresa + ", tipIngreso=" + tipIngreso + ", mtoIngreso="
-				+ mtoIngreso + ", datAdicional=" + datAdicional + "]";
+		return "Cliente [nombres=" + nombres + ", apellidos=" + apellidos + ", tipDocumento=" + tipDocumento
+				+ ", nroDocumento=" + nroDocumento + ", fecNacimiento=" + fecNacimiento +", dirParticular=" + dirParticular + ", ciudadParticular="
+				+ ciudadParticular + ", obsDirParticular=" + obsDirParticular + ", dirLaboral=" + dirLaboral
+				+ ", ciudadLaboral=" + ciudadLaboral + ", obsDirLaboral=" + obsDirLaboral + ", nomEmpresa=" + nomEmpresa
+				+ ", fecIngEmpresa=" + fecIngEmpresa + ", tipIngreso=" + tipIngreso + ", mtoIngreso=" + mtoIngreso
+				+ ", datAdicional=" + datAdicional + "]";
 	}
 	
 	
-	
-
 }
+
+

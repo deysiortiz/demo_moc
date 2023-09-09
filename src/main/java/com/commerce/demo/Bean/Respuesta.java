@@ -1,12 +1,12 @@
 package com.commerce.demo.Bean;
 
 public class Respuesta {
-	private String respuesta;
+	private String codigo;
 	private String mensaje;
 	
 	public Respuesta(String respuesta, String mensaje) {
 		super();
-		this.respuesta = respuesta;
+		this.codigo = respuesta;
 		this.mensaje = mensaje;
 	}
 
@@ -14,12 +14,12 @@ public class Respuesta {
 		super();
 	}
 
-	public String getRespuesta() {
-		return respuesta;
+	public String getCodigo() {
+		return codigo;
 	}
 
-	public void setRespuesta(String respuesta) {
-		this.respuesta = respuesta;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getMensaje() {
@@ -32,7 +32,7 @@ public class Respuesta {
 
 	@Override
 	public String toString() {
-		return "Respuesta [respuesta=" + respuesta + ", mensaje=" + mensaje + "]";
+		return "Respuesta [codigo=" + codigo + ", mensaje=" + mensaje + "]";
 	}
 	
 	
