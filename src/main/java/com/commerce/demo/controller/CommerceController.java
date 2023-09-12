@@ -82,6 +82,15 @@ public class CommerceController {
 		return rpta;
 
 	}
-
-	
+	//lista de solicitudes por cliente	
+		//Consultar solicitud
+		@RequestMapping(value="/solicitudes/consultar", method = RequestMethod.GET )
+		public List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta){
+		 
+			  List<SolicitudCredito> solicitudes = clienteService.consultarSolicitudes(idCliente,fecDesde,fecHasta);
+			  return solicitudes;
+			
+		}	
+	//Lista de solicitudes ingresadas por el comercio en rango desde hasta
+    //Simulacion de creditos 
 }

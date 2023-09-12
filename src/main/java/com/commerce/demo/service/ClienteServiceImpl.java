@@ -18,6 +18,9 @@ import com.commerce.demo.Bean.TelCliente;
 import com.commerce.demo.Bean.Usuario;
 import com.commerce.demo.dao.ClientesDao;
 
+
+import java.sql.Array;
+import java.util.ArrayList;
 @Service
 
 public class ClienteServiceImpl implements ClienteService {
@@ -88,6 +91,17 @@ public class ClienteServiceImpl implements ClienteService {
 		}
 		return rpta;
 
+	}
+	
+	public List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta){
+		 List<SolicitudCredito> listaSolicitudes = new ArrayList<>();
+		 try {
+			 listaSolicitudes= clientesDAO.consultarSolicitudes(idCliente, fecDesde,fecHasta);
+			}catch (Exception e){
+				logger.error("Ocurrió un error al realizar la consulta en el DAO: " + e.getMessage(), e);  
+			}
+		 
+		return listaSolicitudes;
 	}
 	
 	

@@ -15,5 +15,6 @@ public interface ClientesDao {
 	Respuesta altaCliente(HttpServletRequest request, Cliente cliente, List<TelCliente> telefonos);
 	SolicitudCredito consultarSolicitud(HttpServletRequest request, String nroSolicitud, String nroDocumento);
 	Respuesta altaSolicitud(HttpServletRequest request, Cliente cliente, SolicitudCredito solicitud);
+	List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta);
 
 }

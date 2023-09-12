@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.commerce.demo.Bean.Cliente;
 import com.commerce.demo.Bean.Respuesta;
+import com.commerce.demo.Bean.*;
 import com.commerce.demo.dao.ClientesDao;
 import com.commerce.demo.dao.ClientesDaoImpl;
 
@@ -20,46 +21,22 @@ import com.commerce.demo.Bean.TelCliente;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class test {
 
     public static void main(String[] args) {
     	ClientesDao clientesDao= new ClientesDaoImpl();
     	
+    	 List<SolicitudCredito> listaSolicitudes = new ArrayList<>();
+ 
     	
-    	Cliente cliente = new Cliente();
-
-    	cliente.setNombres("Angel Andres");
-    	cliente.setApellidos("Talavera Mendieta");
-    	cliente.setTipDocumento("CI");
-    	cliente.setNroDocumento("4462734");
-    	cliente.setFecNacimiento("20/09/1996");
-    	cliente.setDirParticular("Juan Manuel Frutos esq denis roa");
-    	cliente.setCiudadParticular("ASUNCION");
-    	cliente.setObsDirParticular("na");
-    	cliente.setDirLaboral("Juan Manuel Frutos esq denis roa");
-    	cliente.setCiudadLaboral("ASUNCION");
-    	cliente.setObsDirLaboral("Es la escribania, edificio de tres pisos");
-    	cliente.setNomEmpresa("EST JURIDICO MARISOL MENDIETA Y ASOC");
-    	cliente.setFecIngEmpresa("01/01/2017");
-    	cliente.setTipIngreso("IVA MENSUAL");
-    	cliente.setMtoIngreso("15000000");
-    	cliente.setDatAdicional("na");
-    	
-    	
-    	
-    	 List<TelCliente> telefonos = new ArrayList<>();
-
-    	    // Agrega objetos TelCliente a la lista
-    	    TelCliente tel1 = new TelCliente(null, "Particular", "0985448950", "S");
-    	    TelCliente tel2 = new TelCliente(null, "Laboral", "0987654321", "N");
-
-    	    telefonos.add(tel1);
-    	    telefonos.add(tel2);
+    
     	    	
     	
-    	Respuesta rpta = clientesDao.altaCliente(null, cliente,telefonos);
+    	 listaSolicitudes = clientesDao.consultarSolicitudes(null,"01/09/2023","12/09/2023");
     	
-    	System.out.println(rpta.getCodigo() + " mensaje " + rpta.getMensaje());
+    	System.out.println(listaSolicitudes);
     	
     	
     }
