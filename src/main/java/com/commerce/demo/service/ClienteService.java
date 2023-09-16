@@ -1,5 +1,6 @@
 package com.commerce.demo.service;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.commerce.demo.Bean.Cliente;
+import com.commerce.demo.Bean.CredCuota;
 import com.commerce.demo.Bean.Respuesta;
 import com.commerce.demo.Bean.SolicitudCredito;
 import com.commerce.demo.Bean.TelCliente;
@@ -24,6 +26,7 @@ public interface ClienteService {
 	Respuesta altaSolicitud(HttpServletRequest request, Cliente cliente, SolicitudCredito solicitud);
 	//reporte
 	List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta);
+	List<CredCuota>simuladorCredito(Integer canCuotas, BigDecimal monto, BigDecimal tasInteres);
 
 	}
 

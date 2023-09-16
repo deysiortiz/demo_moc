@@ -3,9 +3,12 @@ package com.commerce.demo.dao;
 import javax.servlet.http.HttpServletRequest;
 
 import com.commerce.demo.Bean.Cliente;
+import com.commerce.demo.Bean.CredCuota;
 import com.commerce.demo.Bean.Respuesta;
 import com.commerce.demo.Bean.SolicitudCredito;
 import com.commerce.demo.Bean.TelCliente;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ClientesDao {
@@ -16,5 +19,5 @@ public interface ClientesDao {
 	SolicitudCredito consultarSolicitud(HttpServletRequest request, String nroSolicitud, String nroDocumento);
 	Respuesta altaSolicitud(HttpServletRequest request, Cliente cliente, SolicitudCredito solicitud);
 	List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta);
-
+	List<CredCuota>simuladorCredito(Integer canCuotas, BigDecimal monto, BigDecimal tasInteres);
 }

@@ -1,6 +1,8 @@
 package com.commerce.demo.controller;
 
 import javax.sql.DataSource;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 ///
 import com.commerce.demo.Bean.*;
 import com.commerce.demo.service.ClienteService;
+
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/commerce")
@@ -83,7 +88,7 @@ public class CommerceController {
 
 	}
 	//lista de solicitudes por cliente	
-		//Consultar solicitud
+	//Lista de solicitudes ingresadas por el comercio en rango desde hasta
 		@RequestMapping(value="/solicitudes/consultar", method = RequestMethod.GET )
 		public List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta){
 		 
@@ -91,6 +96,20 @@ public class CommerceController {
 			  return solicitudes;
 			
 		}	
-	//Lista de solicitudes ingresadas por el comercio en rango desde hasta
     //Simulacion de creditos 
+		@RequestMapping(value="/simulador/creditos/cuota", method = RequestMethod.GET )
+		public List<CredCuota> simuladorCredito(
+			@ApiParam(name = "cantidadCuotas", value = "Cantidad de cuotas del crédito.")
+  			@RequestParam(value = "cantidadCuotas", required = true) int cantidadCuotas,
+  			@ApiParam(name = "monto", value = "Monto del crédito.")
+  			@RequestParam(value = "monto", required = true) BigDecimal monto,
+  			@ApiParam(name = "tasInteres", value = "Tasa de interés.")
+  			@RequestParam(value = "tasInteres", required = false) BigDecimal tasInteres
+			) {
+			List<CredCuota> lista = clienteService.simuladorCredito(cantidadCuotas, monto, tasInteres);			
+			
+			return lista;
+			
+		}
+		
 }

@@ -1,5 +1,6 @@
 package com.commerce.demo.test;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,16 +28,25 @@ public class test {
 
     public static void main(String[] args) {
     	ClientesDao clientesDao= new ClientesDaoImpl();
+    	Respuesta rpta = new Respuesta("OK","sin errores");
     	
-    	 List<SolicitudCredito> listaSolicitudes = new ArrayList<>();
- 
+    	Cliente cli = new Cliente();
     	
-    
-    	    	
+    	cli.setNroDocumento("5100158");
     	
-    	 listaSolicitudes = clientesDao.consultarSolicitudes(null,"01/09/2023","12/09/2023");
+    	SolicitudCredito soli = new SolicitudCredito();
+    	soli.setIdCliente(cli.getNroDocumento());
+    	soli.setMonto("5000000");
+    	soli.setPlazo("10");
+    	soli.setMoneda("GS");
+    	soli.setDestino("Licuadora ARNO 3000");
     	
-    	System.out.println(listaSolicitudes);
+    	    
+    	
+    	rpta = clientesDao.altaSolicitud(null, cli, soli);
+    	
+    	System.out.println("codigo " + rpta.getCodigo());
+    	System.out.println("mensaje " + rpta.getMensaje());
     	
     	
     }

@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.jboss.logging.Logger;
 
 import com.commerce.demo.Bean.Cliente;
+import com.commerce.demo.Bean.CredCuota;
 import com.commerce.demo.Bean.Respuesta;
 import com.commerce.demo.Bean.SolicitudCredito;
 import com.commerce.demo.Bean.TelCliente;
 import com.commerce.demo.Bean.Usuario;
 import com.commerce.demo.dao.ClientesDao;
 
-
+import java.math.BigDecimal;
 import java.sql.Array;
 import java.util.ArrayList;
 @Service
@@ -102,6 +103,17 @@ public class ClienteServiceImpl implements ClienteService {
 			}
 		 
 		return listaSolicitudes;
+	}
+	
+	public List<CredCuota>simuladorCredito(Integer canCuotas, BigDecimal monto, BigDecimal tasInteres){
+		List<CredCuota> listCuotas = new ArrayList<>();
+		try {
+			listCuotas= clientesDAO.simuladorCredito(canCuotas, monto,tasInteres);
+			}catch (Exception e){
+				logger.error("Ocurrió un error al realizar la consulta en el DAO: " + e.getMessage(), e);  
+			}
+		 
+		return listCuotas;
 	}
 	
 	

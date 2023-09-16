@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.jboss.logging.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -23,6 +24,7 @@ import oracle.jdbc.*;
 import java.sql.Date;
 
 import com.commerce.demo.Bean.Cliente;
+import com.commerce.demo.Bean.CredCuota;
 import com.commerce.demo.Bean.Respuesta;
 import com.commerce.demo.Bean.SolicitudCredito;
 import com.commerce.demo.Bean.TelCliente;
@@ -319,19 +321,32 @@ public class ClientesDaoImpl implements ClientesDao {
             connection = OracleConnection.getConnection();
             
             // Llama al procedimiento almacenado "insertar_cliente"
-            String storedProcedure = "{CALL insertar_cliente(?, ?, ?, ?)}";
+            String storedProcedure = "{CALL PR_ALT_SOLICITUD(?, ?, ?, ?, ?, ?, ?)}";
             callableStatement = connection.prepareCall(storedProcedure);
             
             // Establece los valores de los parámetros del procedimiento
-            //callableStatement.setInt(1, cliente.getId());
-            //callableStatement.setString(2, cliente.getNombre());
-            //callableStatement.setString(3, cliente.getApellido());
-            //callableStatement.setString(4, cliente.getEmail());
+            callableStatement.setString(1, cliente.getNroDocumento());
+            callableStatement.setString(2, null); //toma fec del dia
+            callableStatement.setString(3, solicitud.getMonto());
+            callableStatement.setString(4, solicitud.getPlazo());
+            callableStatement.setString(5, solicitud.getMoneda());
+            callableStatement.setString(6, solicitud.getDestino());
+            
+            callableStatement.registerOutParameter(7, Types.STRUCT, "APPRESPUESTA");
             
             // Ejecuta el procedimiento almacenado
             callableStatement.execute();
             
-            System.out.println("Usuario validado correctamente mediante el procedimiento almacenado.");
+            STRUCT respuestaStruct = (STRUCT) callableStatement.getObject(7);
+	        Object[] respuestaAttributes = respuestaStruct.getAttributes();
+	        String codigoRespuesta = (String) respuestaAttributes[0];
+	        String mensajeRespuesta = (String) respuestaAttributes[1];
+
+	        // Puedes usar los valores de código y mensaje de respuesta según sea necesario
+	        System.out.println("Código de respuesta: " + codigoRespuesta);
+	        System.out.println("Mensaje de respuesta: " + mensajeRespuesta);
+            
+            System.out.println("Solicitud en curso.");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -363,14 +378,17 @@ public class ClientesDaoImpl implements ClientesDao {
 	        callableStatement.setString(2, fecDesde);
 	        callableStatement.setString(3, fecHasta);
 
-	        // Crea un objeto OracleArray
-	        System.out.println("antes OracleArray ");
+	        // Configura los parámetros de salida
+	        callableStatement.registerOutParameter(4, OracleTypes.ARRAY, "TY_APP_SOLICITUD_TABLE"); 
+	        callableStatement.registerOutParameter(5, OracleTypes.STRUCT, "APPRESPUESTA"); 
 
-	        Array oracleArray = (Array) callableStatement.getObject(4);
-	        System.out.println("dp OracleArray ");
+	        // Ejecuta el procedimiento
+	        callableStatement.execute();
 
+	        // Obtiene el resultado del parámetro de salida de TY_APP_SOLICITUD_TABLE
+	        ARRAY oracleArray = (ARRAY) callableStatement.getObject(4);
 	        if (oracleArray != null) {
-	            // Obtiene los objetos TY_APP_SOLICITUD de la OracleArray
+	            // Convierte la OracleArray a un array de objetos
 	            Object[] solicitudObjects = (Object[]) oracleArray.getArray();
 
 	            for (Object solicitudObject : solicitudObjects) {
@@ -419,5 +437,80 @@ public class ClientesDaoImpl implements ClientesDao {
 
 	    return listaSolicitudes;
 	}
+	
+	public List<CredCuota>simuladorCredito(Integer canCuotas, BigDecimal monto, BigDecimal tasInteres){
+		List<CredCuota> listaCuotas = new ArrayList<>();
+	    Connection connection = null;
+	    CallableStatement callableStatement = null;
 
-}
+	    try {
+	        connection = OracleConnection.getConnection();
+
+	        // Llama al procedimiento almacenado
+	        String storedProcedure = "{CALL pr_gen_sim_prestamo(?, ?, ?, ?, ?, ?)}";
+	        callableStatement = connection.prepareCall(storedProcedure);
+	        String codMoneda = "GS";
+	        // Establece los valores de los parámetros del procedimiento
+	        callableStatement.setString(1, codMoneda);
+	        callableStatement.setInt(2, canCuotas);
+	        callableStatement.setBigDecimal(3, monto);
+	        callableStatement.setBigDecimal(4, tasInteres);
+
+	        // Configura los parámetros de salida
+	        callableStatement.registerOutParameter(5, OracleTypes.ARRAY, "SIMULADOR_CREDITO_LIST"); 
+	        callableStatement.registerOutParameter(6, OracleTypes.STRUCT, "APPRESPUESTA"); 
+
+	        // Ejecuta el procedimiento
+	        callableStatement.execute();
+
+	        // Obtiene el resultado del parámetro de salida de TY_APP_SOLICITUD_TABLE
+	        ARRAY oracleArray = (ARRAY) callableStatement.getObject(5);
+	        if (oracleArray != null) {
+	            // Convierte la OracleArray a un array de objetos
+	            Object[] solicitudObjects = (Object[]) oracleArray.getArray();
+
+	            for (Object solicitudObject : solicitudObjects) {
+	                // Convierte cada solicitudObject a un objeto STRUCT
+	                STRUCT structSolicitud = (STRUCT) solicitudObject;
+
+	                // Obtiene los atributos de la estructura
+	                Object[] solicitudAttributes = structSolicitud.getAttributes();
+	                if (solicitudAttributes.length >= 8) { // Asegúrate de tener suficientes atributos
+	                    Integer nroCuota = (Integer) solicitudAttributes[0];
+	                    BigDecimal montoInteres = (BigDecimal) solicitudAttributes[1];
+	                    BigDecimal montoCuota = (BigDecimal) solicitudAttributes[2];
+	                    String fecVencimiento = (String) solicitudAttributes[3];
+	                    BigDecimal montoCapital = (BigDecimal) solicitudAttributes[4];
+
+	                    // Crea una instancia de SolicitudCredito y agrégala a la lista
+	                    CredCuota solCuotas = new CredCuota();
+	                    listaCuotas.add(solCuotas);
+	                }
+	            }
+	        }
+
+	        // Obtiene el resultado del parámetro de salida de APPRESPUESTA
+	        STRUCT respuestaStruct = (STRUCT) callableStatement.getObject(6);
+	        Object[] respuestaAttributes = respuestaStruct.getAttributes();
+	        String codigoRespuesta = (String) respuestaAttributes[0];
+	        String mensajeRespuesta = (String) respuestaAttributes[1];
+
+	        // Puedes usar los valores de código y mensaje de respuesta según sea necesario
+	        System.out.println("Código de respuesta: " + codigoRespuesta);
+	        System.out.println("Mensaje de respuesta: " + mensajeRespuesta);
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (callableStatement != null) callableStatement.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return listaCuotas;
+	}
+		
+	}
+
