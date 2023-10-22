@@ -2,6 +2,8 @@ package com.commerce.demo.dao;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Repository;
+
 import com.commerce.demo.Bean.Cliente;
 import com.commerce.demo.Bean.CredCuota;
 import com.commerce.demo.Bean.Respuesta;
@@ -10,7 +12,7 @@ import com.commerce.demo.Bean.TelCliente;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+@Repository
 public interface ClientesDao {
 	
 	Respuesta validarUsuario(String usuario, String contrasenha);

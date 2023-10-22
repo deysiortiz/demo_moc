@@ -5,7 +5,12 @@ import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,48 +30,53 @@ import com.commerce.demo.service.ClienteService;
 
 import io.swagger.annotations.ApiParam;
 
-@RestController
-@RequestMapping("/commerce")
-public class CommerceController {
-	
-	// Inyecta el servicio de clientes
-	@Autowired
-	private ClienteService clienteService;
-    
-	
-	@RequestMapping(value="/valida/usuario/{usuario}", method = RequestMethod.POST )
-	public Respuesta validarUsuario(HttpServletRequest request, String usuario, String contrasenha){
+	@RestController
+	@RequestMapping("/commerce")
+	public class CommerceController {
+		
+		// Inyecta el servicio de clientes
+		@Autowired
+		private ClienteService clienteService;
+	    
+		
+		@RequestMapping(value="/valida/usuario/", method = RequestMethod.POST )
+		public Respuesta validarUsuario(HttpServletRequest request,  @RequestBody Usuario usuario){
+			 
+			String usu = usuario.getUsuario();
+			String contrasenha = usuario.getContrasenha();
+			
+			
+			
+			//aca validas contra bd
+			Respuesta rpta= new Respuesta();
+			rpta = clienteService.validarUsuario(usu, contrasenha);
+			return rpta;
+			
+			
+			
+		}
+		
+		//Consultar cliente
+		@RequestMapping("/cliente/consultar/{documento}")
+		//@RequestMapping(value="/cliente/consultar", method = RequestMethod.GET )
+		public Cliente obtenerCliente(HttpServletRequest request, @PathVariable String documento){
 		 
-		Usuario user= new Usuario();
+			Cliente cliente = new Cliente();
+			cliente=clienteService.obtenerCliente(documento);
+			return cliente;
+			
+		}
 		
-		//aca validas contra bd
-		Respuesta rpta= new Respuesta();
-		rpta = clienteService.validarUsuario(usuario, contrasenha);
-		return rpta;
-		
-		
-		
-	}
-	
-	//Consultar cliente
-	@RequestMapping("/cliente/consultar/{documento}")
-	//@RequestMapping(value="/cliente/consultar", method = RequestMethod.GET )
-	public Cliente obtenerCliente(HttpServletRequest request, @PathVariable String documento){
-	 
-		Cliente cliente = new Cliente();
-		cliente=clienteService.obtenerCliente(documento);
-		return cliente;
-		
-	}
-	
-	//Dar de alta al cliente
-	@RequestMapping(value="/cliente/alta", method = RequestMethod.POST )
-	public Respuesta altaCliente(HttpServletRequest request, Cliente cliente, List<TelCliente> telefonos) {
-		Respuesta rpta= new Respuesta();
-		rpta = clienteService.altaCliente(request, cliente, telefonos);
-		return rpta;
+		//Dar de alta al cliente
+		@RequestMapping(value = "/cliente/alta", method = RequestMethod.POST)
+		public Respuesta altaCliente(HttpServletRequest request, @RequestBody Map<String, Object> requestBody) {
+			  ObjectMapper objectMapper = new ObjectMapper();
+			    Cliente cliente = objectMapper.convertValue(requestBody.get("cliente"), Cliente.class);
+			    List<TelCliente> telefonos = objectMapper.convertValue(requestBody.get("telefonos"), new TypeReference<List<TelCliente>>() {});
 
-	}
+		    Respuesta rpta = clienteService.altaCliente(request, cliente, telefonos);
+		    return rpta;
+		}
 	
 	//Consultar solicitud
 	@RequestMapping(value="/solicitud/consultar", method = RequestMethod.GET )
@@ -77,9 +88,13 @@ public class CommerceController {
 		
 	} 
 	
-	//Dar de alta al solcitud
+	//Dar de alta una solicitud
 		@RequestMapping(value="/solicitud/alta", method = RequestMethod.POST )
-	public Respuesta altaSolicitud(HttpServletRequest request, Cliente cliente, SolicitudCredito solicitud)  {
+	public Respuesta altaSolicitud(HttpServletRequest request, @RequestBody Map<String, Object> requestBody)  {
+			ObjectMapper objectMapper = new ObjectMapper();
+		    Cliente cliente = objectMapper.convertValue(requestBody.get("cliente"), Cliente.class);
+		    SolicitudCredito solicitud = objectMapper.convertValue(requestBody.get("solicitud"), SolicitudCredito.class);
+			
 		Respuesta rpta= new Respuesta();
 		
 		rpta = clienteService.altaSolicitud(request, cliente,solicitud);

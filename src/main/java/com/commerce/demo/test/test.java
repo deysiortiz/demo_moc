@@ -26,30 +26,25 @@ import javax.servlet.http.HttpServletRequest;
 
 public class test {
 
+	//simulador de creditos
     public static void main(String[] args) {
-    	ClientesDao clientesDao= new ClientesDaoImpl();
-    	Respuesta rpta = new Respuesta("OK","sin errores");
-    	
-    	Cliente cli = new Cliente();
-    	
-    	cli.setNroDocumento("5100158");
-    	
-    	SolicitudCredito soli = new SolicitudCredito();
-    	soli.setIdCliente(cli.getNroDocumento());
-    	soli.setMonto("5000000");
-    	soli.setPlazo("10");
-    	soli.setMoneda("GS");
-    	soli.setDestino("Licuadora ARNO 3000");
-    	
-    	    
-    	
-    	rpta = clientesDao.altaSolicitud(null, cli, soli);
-    	
-    	System.out.println("codigo " + rpta.getCodigo());
-    	System.out.println("mensaje " + rpta.getMensaje());
-    	
-    	
-    }
+	ClientesDao clientesDao= new ClientesDaoImpl();
+	
+	 List<CredCuota> listaSolicitudes = new ArrayList<>();
+
+	
+
+	 Integer cancuotas=12;
+	    BigDecimal monto = new BigDecimal("5000000");
+	    BigDecimal tasinteres = new BigDecimal("12");
+	    
+	
+	 listaSolicitudes = clientesDao.simuladorCredito(cancuotas, monto, tasinteres);
+	
+	System.out.println(listaSolicitudes.toString());
+	
+	
+}
     	
     	
     	

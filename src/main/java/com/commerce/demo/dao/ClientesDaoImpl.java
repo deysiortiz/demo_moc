@@ -3,6 +3,7 @@ package com.commerce.demo.dao;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jboss.logging.Logger;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -40,7 +41,7 @@ import java.util.*;
 
 
 import oracle.sql.StructDescriptor;
-
+@Repository
 public class ClientesDaoImpl implements ClientesDao {
 
 	private static final Logger logger = Logger.getLogger(ClienteServiceImpl.class);
@@ -265,11 +266,12 @@ public class ClientesDaoImpl implements ClientesDao {
             Object[] respuestaAttributes1 = soliStruct.getAttributes();
             String idSolicitud = (String) respuestaAttributes1[0];
             String idCliente = (String) respuestaAttributes1[1];
-            String fecSolicitud = (String) respuestaAttributes1[2];
-            String monto = (String) respuestaAttributes1[3];
-            String plazo = (String) respuestaAttributes1[4];
-            String moneda = (String) respuestaAttributes1[5];
-            String estado = (String) respuestaAttributes1[6];
+            String estadoSoli = (String) respuestaAttributes1[2];
+            String fecSolicitud = (String) respuestaAttributes1[3];
+            String monto = (String) respuestaAttributes1[4];
+            String plazo = (String) respuestaAttributes1[5];
+            String moneda = (String) respuestaAttributes1[6];
+            String destino = (String) respuestaAttributes1[7];
             
             solicitud.setIdCliente(idCliente);
             solicitud.setIdSolicitud(idSolicitud);
@@ -277,7 +279,8 @@ public class ClientesDaoImpl implements ClientesDao {
             solicitud.setMonto(monto);
             solicitud.setPlazo(plazo);
             solicitud.setMoneda(moneda);
-            solicitud.setEstadoSolicitud(estado);
+            solicitud.setEstadoSolicitud(estadoSoli);
+            solicitud.setDestino(destino);
             
             
             
@@ -296,7 +299,7 @@ public class ClientesDaoImpl implements ClientesDao {
             // Ejecuta el procedimiento almacenado
             callableStatement.execute();
             
-            System.out.println("Usuario validado correctamente mediante el procedimiento almacenado.");
+            System.out.println("Consulta de Solicitud realizada.");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -341,6 +344,9 @@ public class ClientesDaoImpl implements ClientesDao {
 	        Object[] respuestaAttributes = respuestaStruct.getAttributes();
 	        String codigoRespuesta = (String) respuestaAttributes[0];
 	        String mensajeRespuesta = (String) respuestaAttributes[1];
+	        
+	        rpta.setCodigo(codigoRespuesta);
+	        rpta.setMensaje(mensajeRespuesta);
 
 	        // Puedes usar los valores de código y mensaje de respuesta según sea necesario
 	        System.out.println("Código de respuesta: " + codigoRespuesta);
@@ -475,16 +481,26 @@ public class ClientesDaoImpl implements ClientesDao {
 
 	                // Obtiene los atributos de la estructura
 	                Object[] solicitudAttributes = structSolicitud.getAttributes();
-	                if (solicitudAttributes.length >= 8) { // Asegúrate de tener suficientes atributos
-	                    Integer nroCuota = (Integer) solicitudAttributes[0];
+	                if (solicitudAttributes.length >= 5) { // Asegúrate de tener suficientes atributos
+	                	BigDecimal nroCuota = (BigDecimal) solicitudAttributes[0];
 	                    BigDecimal montoInteres = (BigDecimal) solicitudAttributes[1];
 	                    BigDecimal montoCuota = (BigDecimal) solicitudAttributes[2];
-	                    String fecVencimiento = (String) solicitudAttributes[3];
-	                    BigDecimal montoCapital = (BigDecimal) solicitudAttributes[4];
-
+	                    BigDecimal montoTotal = (BigDecimal) solicitudAttributes[3];
+	                    String fecVencimiento = (String) solicitudAttributes[4];
+	                    BigDecimal montoCapital = (BigDecimal) solicitudAttributes[5];
+	                    
+	                    int nroCuotaInt = nroCuota.intValue();
 	                    // Crea una instancia de SolicitudCredito y agrégala a la lista
 	                    CredCuota solCuotas = new CredCuota();
+	                    solCuotas.setNroCuota(nroCuotaInt);
+	                    solCuotas.setMontoInteres(montoInteres);
+	                    solCuotas.setMontoCuota(montoCuota);
+	                    solCuotas.setMontoTotal(montoTotal);
+	                    solCuotas.setFechaVencimiento(fecVencimiento);
+	                    solCuotas.setMontoCapital(montoCapital);
 	                    listaCuotas.add(solCuotas);
+	                    
+	                    System.out.println("solCuotas " + solCuotas.getMontoCuota());
 	                }
 	            }
 	        }

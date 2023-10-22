@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.commerce.demo.Bean.Cliente;
 import com.commerce.demo.Bean.CredCuota;
@@ -17,6 +18,7 @@ import com.commerce.demo.Bean.Respuesta;
 import com.commerce.demo.Bean.SolicitudCredito;
 import com.commerce.demo.Bean.TelCliente;
 
+@Service
 public interface ClienteService {
 	
 	Respuesta validarUsuario(String usuario, String contrasenha);

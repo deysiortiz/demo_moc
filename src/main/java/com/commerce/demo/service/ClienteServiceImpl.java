@@ -25,9 +25,15 @@ import java.util.ArrayList;
 @Service
 
 public class ClienteServiceImpl implements ClienteService {
-	@Autowired
+	/*@Autowired
 	ClientesDao clientesDAO;
+	*/
+	private final ClientesDao clientesDAO;
 	
+	 @Autowired
+	    public ClienteServiceImpl(ClientesDao clientesDAO) {
+	        this.clientesDAO = clientesDAO;
+	    }
 	 private static final Logger logger = Logger.getLogger(ClienteServiceImpl.class);
 	
 	public Respuesta validarUsuario(String usuario, String contrasenha) {

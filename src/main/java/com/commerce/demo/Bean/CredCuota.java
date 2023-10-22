@@ -10,7 +10,7 @@ import java.sql.SQLOutput;
 
 public class CredCuota implements SQLData {
 
-    private int nroCuota;
+    private Integer nroCuota;
     private BigDecimal montoInteres;
     private BigDecimal montoCuota;
     private BigDecimal montoTotal;
