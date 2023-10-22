@@ -21,7 +21,11 @@ public class CredCuota implements SQLData {
     
     private String nombreTipoSQL;
 
-    public int getNroCuota() {
+    public CredCuota(int i, BigDecimal unoInt, BigDecimal unoCuo, BigDecimal unotot, String string, BigDecimal capuno) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getNroCuota() {
         return nroCuota;
     }
 

@@ -49,7 +49,9 @@ import io.swagger.annotations.ApiParam;
 			
 			//aca validas contra bd
 			Respuesta rpta= new Respuesta();
-			rpta = clienteService.validarUsuario(usu, contrasenha);
+			//rpta = clienteService.validarUsuario(usu, contrasenha);
+			rpta.setCodigo("0");
+			rpta.setMensaje("OK");
 			return rpta;
 			
 			
@@ -62,7 +64,37 @@ import io.swagger.annotations.ApiParam;
 		public Cliente obtenerCliente(HttpServletRequest request, @PathVariable String documento){
 		 
 			Cliente cliente = new Cliente();
-			cliente=clienteService.obtenerCliente(documento);
+			//cliente=clienteService.obtenerCliente(documento);
+			/*
+
+
+
+
+
+	public String nomEmpresa;
+	public String fecIngEmpresa;
+	public String tipIngreso;
+	public String mtoIngreso;
+			 * */
+			cliente.setNroDocumento("5100159");
+			cliente.setTipDocumento("CI");
+			cliente.setNombres("Deysi Ortiz");
+			cliente.setApellidos("Ortiz Torales");
+			cliente.setCiudadParticular("Asuncion");
+			cliente.setFecNacimiento("19/12/1997");
+			cliente.setDirParticular("dir partic");
+			cliente.setCiudadParticular("luque");
+			cliente.setObsDirParticular("ultima casa de la cuadra");
+			cliente.setDirLaboral("dire laboral");
+			cliente.setCiudadLaboral("asu");
+			cliente.setObsDirLaboral("edificio azul");
+			
+			cliente.setNomEmpresa("banco prueba");
+			cliente.setFecIngEmpresa("22/01/2020");
+			
+			cliente.setTipIngreso("iva");
+			cliente.setMtoIngreso("2000000");
+			
 			return cliente;
 			
 		}
@@ -74,7 +106,10 @@ import io.swagger.annotations.ApiParam;
 			    Cliente cliente = objectMapper.convertValue(requestBody.get("cliente"), Cliente.class);
 			    List<TelCliente> telefonos = objectMapper.convertValue(requestBody.get("telefonos"), new TypeReference<List<TelCliente>>() {});
 
-		    Respuesta rpta = clienteService.altaCliente(request, cliente, telefonos);
+		    //Respuesta rpta = clienteService.altaCliente(request, cliente, telefonos);
+			    Respuesta rpta = new Respuesta();
+			    rpta.setCodigo("0");
+			    rpta.setMensaje("OK");
 		    return rpta;
 		}
 	
@@ -83,7 +118,24 @@ import io.swagger.annotations.ApiParam;
 	public SolicitudCredito consultarSolicitud(HttpServletRequest request, String nroSolicitud, String nroDocumento){
 	 
 		SolicitudCredito solicitud = new SolicitudCredito();
-		solicitud =  clienteService.consultarSolicitud(request, nroSolicitud, nroDocumento);
+		//solicitud =  clienteService.consultarSolicitud(request, nroSolicitud, nroDocumento);
+		/* private String idSolicitud;
+	private String idCliente;
+	private String estadoSolicitud;
+	private String fecSolicitud;
+	private String monto;
+	private String plazo;
+	private String moneda;
+	private String destino;
+*/
+		solicitud.setIdSolicitud("100");
+		solicitud.setIdCliente("425");
+		solicitud.setEstadoSolicitud("APR");
+		solicitud.setFecSolicitud("22/09/2023");
+		solicitud.setMonto("5000000");
+		solicitud.setPlazo("24");
+		solicitud.setMoneda("GS");
+		solicitud.setDestino("heladera");
 		return solicitud;
 		
 	} 
@@ -97,7 +149,9 @@ import io.swagger.annotations.ApiParam;
 			
 		Respuesta rpta= new Respuesta();
 		
-		rpta = clienteService.altaSolicitud(request, cliente,solicitud);
+		//rpta = clienteService.altaSolicitud(request, cliente,solicitud);
+		rpta.setCodigo("0");
+	    rpta.setMensaje("OK");
 
 		return rpta;
 
@@ -107,7 +161,13 @@ import io.swagger.annotations.ApiParam;
 		@RequestMapping(value="/solicitudes/consultar", method = RequestMethod.GET )
 		public List<SolicitudCredito> consultarSolicitudes(String idCliente, String fecDesde, String fecHasta){
 		 
-			  List<SolicitudCredito> solicitudes = clienteService.consultarSolicitudes(idCliente,fecDesde,fecHasta);
+			  //List<SolicitudCredito> solicitudes = clienteService.consultarSolicitudes(idCliente,fecDesde,fecHasta);
+			List<SolicitudCredito> solicitudes = new ArrayList<>();
+			solicitudes.add(new SolicitudCredito("0123", "425", "APR", "19/09/2023","5000000", "24", "GS", "heladera",null));
+	        solicitudes.add(new SolicitudCredito("0124", "426", "REC", "20/09/2023","2000000", "12", "GS", "aire",null));
+	        solicitudes.add(new SolicitudCredito("0125", "427", "APR","21/09/2023","1000000", "8", "GS", "licuadora",null));
+			
+			
 			  return solicitudes;
 			
 		}	
@@ -121,7 +181,39 @@ import io.swagger.annotations.ApiParam;
   			@ApiParam(name = "tasInteres", value = "Tasa de interés.")
   			@RequestParam(value = "tasInteres", required = false) BigDecimal tasInteres
 			) {
-			List<CredCuota> lista = clienteService.simuladorCredito(cantidadCuotas, monto, tasInteres);			
+			//List<CredCuota> lista = clienteService.simuladorCredito(cantidadCuotas, monto, tasInteres);			
+			/*
+			 *  private Integer nroCuota;
+			    private BigDecimal montoInteres;
+			    private BigDecimal montoCuota;
+			    private BigDecimal montoTotal;
+			    private String fechaVencimiento;
+			    private BigDecimal montoCapital;
+			 * 
+			 * */
+			List<CredCuota> lista = new ArrayList<>();
+			BigDecimal unoInt = new BigDecimal(100000);
+			BigDecimal dosInt = new BigDecimal(98000);
+			BigDecimal tresInt = new BigDecimal(95000);
+			
+			//cuota
+			BigDecimal unoCuo = new BigDecimal(200000);
+			BigDecimal dosCuo = new BigDecimal(202000);
+			BigDecimal tresCuo = new BigDecimal(205000);
+			//mtototal
+			BigDecimal unotot = new BigDecimal(300000);
+			BigDecimal dostot = new BigDecimal(300000);
+			BigDecimal trestot = new BigDecimal(300000);
+			
+			BigDecimal capuno = new BigDecimal(500000);
+			BigDecimal capdos = new BigDecimal(300000);
+			BigDecimal captres = new BigDecimal(200000);
+			
+			
+			
+			lista.add (new CredCuota(1,unoInt, unoCuo,unotot, "22/11/2023", capuno ));
+			lista.add (new CredCuota(2,dosInt, dosCuo, dostot,"22/12/2023", capdos ));
+			lista.add (new CredCuota(3,tresInt, tresCuo, trestot, "22/01/2024",captres));
 			
 			return lista;
 			
